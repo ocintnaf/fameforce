@@ -14,8 +14,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Print(config)
-
 	db, err := database.NewConnection(config.Database)
 	if err != nil {
 		log.Fatal(err)

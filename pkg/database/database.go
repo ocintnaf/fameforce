@@ -7,6 +7,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// Postgres connection config
 type Config struct {
 	Host     string `mapstructure:"host"`
 	Port     uint   `mapstructure:"port"`
@@ -15,16 +16,20 @@ type Config struct {
 	Password string `mapstructure:"password"`
 }
 
-func NewConnection(cfg Config) (*sql.DB, error) {
-	dsn := fmt.Sprintf("host=%s port=%d dbname=%s user=%s password=%s sslmode=disable",
+// GetDSN returns a data source name string
+func GetDSN(cfg Config) string {
+	return fmt.Sprintf("host=%s port=%d dbname=%s user=%s password=%s sslmode=disable",
 		cfg.Host,
 		cfg.Port,
 		cfg.Name,
 		cfg.User,
 		cfg.Password,
 	)
+}
 
-	db, err := sql.Open("postgres", dsn)
+// NewConnection establishes a new database connection with the given config
+func NewConnection(cfg Config) (*sql.DB, error) {
+	db, err := sql.Open("postgres", GetDSN(cfg))
 	if err != nil {
 		return nil, err
 	}
