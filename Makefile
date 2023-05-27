@@ -1,4 +1,8 @@
-SECONDS_SINCE_EPOCH=$(shell date +%s)
+DATABASE_HOST=$(shell grep -oP '(?<=DATABASE_HOST=).*' .env)
+DATABASE_PORT=$(shell grep -oP '(?<=DATABASE_PORT=).*' .env)
+DATABASE_USER=$(shell grep -oP '(?<=DATABASE_USER=).*' .env)
+DATABASE_PASSWORD=$(shell grep -oP '(?<=DATABASE_PASSWORD=).*' .env)
+DATABASE_NAME=$(shell grep -oP '(?<=DATABASE_NAME=).*' .env)
 
 new_migration:
 	@if [ -z "$(name)" ]; then \
@@ -6,8 +10,5 @@ new_migration:
 		exit 1; \
 	fi
 	@echo "Creating new empty up migration file..."
-	touch ./migrations/$(SECONDS_SINCE_EPOCH)-$(name).up.sql
-
-	@echo "Creating new empty down migration file..."
-	touch ./migrations/$(SECONDS_SINCE_EPOCH)-$(name).down.sql
+	migrate create -ext sql -dir migrations/ -seq $(name)
 
