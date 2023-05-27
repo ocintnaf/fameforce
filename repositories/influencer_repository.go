@@ -35,8 +35,12 @@ func (r *influencerRepository) FindAll() ([]entities.InfluencerEntity, error) {
 	for rows.Next() {
 		var influencer entities.InfluencerEntity
 
-		err := rows.Scan(&influencer.ID, &influencer.Name)
-		if err != nil {
+		if err := rows.Scan(
+			&influencer.ID,
+			&influencer.Name,
+			&influencer.CreatedAt,
+			&influencer.UpdatedAt,
+		); err != nil {
 			return nil, err
 		}
 
