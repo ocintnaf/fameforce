@@ -15,15 +15,15 @@ type influencerRepository struct {
 }
 
 type InfluencerRepository interface {
-	FindAll() ([]entities.Influencer, error)
+	FindAll() ([]entities.InfluencerEntity, error)
 }
 
 func NewInfluencerRepository(db *sql.DB) *influencerRepository {
 	return &influencerRepository{db: db}
 }
 
-func (r *influencerRepository) FindAll() ([]entities.Influencer, error) {
-	var influencers []entities.Influencer
+func (r *influencerRepository) FindAll() ([]entities.InfluencerEntity, error) {
+	var influencers []entities.InfluencerEntity
 
 	rows, err := r.db.Query(findAllSqlStatement)
 	if err != nil {
@@ -33,7 +33,7 @@ func (r *influencerRepository) FindAll() ([]entities.Influencer, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var influencer entities.Influencer
+		var influencer entities.InfluencerEntity
 
 		err := rows.Scan(&influencer.ID, &influencer.Name)
 		if err != nil {
