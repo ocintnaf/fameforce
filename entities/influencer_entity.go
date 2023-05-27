@@ -5,12 +5,13 @@ type Influencer struct {
 	Name string
 }
 
-func NewInfluencerEntity(
-	id uint,
-	name string,
-) *Influencer {
+func NewInfluencerEntity(id uint, name string) *Influencer {
 	return &Influencer{
 		ID:   id,
 		Name: name,
 	}
+}
+
+func (e *Influencer) TableName() string {
+	return "influencers"
 }
