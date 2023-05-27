@@ -5,6 +5,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/ocintnaf/fameforce/config"
+	"github.com/ocintnaf/fameforce/controllers"
 	"github.com/ocintnaf/fameforce/pkg/database"
 	"github.com/ocintnaf/fameforce/repositories"
 )
@@ -24,6 +25,10 @@ func main() {
 
 	server := fiber.New()
 
+	api := server.Group("/api")
+
+	v1 := api.Group("/v1")
+
 	influencersRepository := repositories.NewInfluencerRepository(db)
 
 	server.Get("/", func(ctx *fiber.Ctx) error {
@@ -36,6 +41,9 @@ func main() {
 			"data": influencers,
 		})
 	})
+
+	healthController := controllers.NewHealthController(v1)
+	healthController.RegisterRoutes()
 
 	server.Listen(":3000")
 }
