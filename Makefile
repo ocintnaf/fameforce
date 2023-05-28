@@ -28,7 +28,7 @@ migrate-down:
 
 server:
 	@echo "${COLOR_INFO}Starting server..."
-	go run cmd/server/main.go
+	go run cmd/app/main.go
 
 test:
 	@echo "${COLOR_INFO}Running tests..."

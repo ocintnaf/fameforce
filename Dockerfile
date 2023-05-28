@@ -10,7 +10,7 @@ RUN go mod download
 
 COPY . ./
 
-RUN go build -o fameforce ./cmd/server
+RUN go build -o fameforce ./cmd/app
 
 WORKDIR /dist
 
