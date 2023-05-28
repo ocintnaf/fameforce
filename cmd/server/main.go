@@ -8,6 +8,7 @@ import (
 	"github.com/ocintnaf/fameforce/controllers"
 	"github.com/ocintnaf/fameforce/pkg/database"
 	"github.com/ocintnaf/fameforce/repositories"
+	"github.com/ocintnaf/fameforce/usecases"
 )
 
 func main() {
@@ -26,21 +27,13 @@ func main() {
 	server := fiber.New()
 
 	api := server.Group("/api")
-
 	v1 := api.Group("/v1")
 
-	influencersRepository := repositories.NewInfluencerRepository(db)
-
-	server.Get("/", func(ctx *fiber.Ctx) error {
-		influencers, err := influencersRepository.FindAll()
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-			"data": influencers,
-		})
-	})
+	influencerGroup := v1.Group("/influencers")
+	influencerRepository := repositories.NewInfluencerRepository(db)
+	influencerUsecase := usecases.NewInfluencerUsecase(influencerRepository)
+	influencerController := controllers.NewInfluencerController(influencerGroup, influencerUsecase)
+	influencerController.RegisterRoutes()
 
 	healthController := controllers.NewHealthController(v1)
 	healthController.RegisterRoutes()
