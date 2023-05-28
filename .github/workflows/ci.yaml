@@ -23,6 +23,12 @@ jobs:
       - name: "Go Vet"
         run: go vet ./...
 
+      - name: "Staticcheck"
+        uses: dominikh/staticcheck-action@v1.2.0
+        with:
+          version: "latest"
+          cache-key: "staticcheck-${{ matrix.go-version }}"
+
       - name: "Go Tidy"
         run: go mod tidy && git diff --exit-code
 
