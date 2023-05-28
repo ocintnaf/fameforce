@@ -5,9 +5,10 @@ import (
 	"time"
 
 	"github.com/ocintnaf/fameforce/dtos"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestNewInfluencerEntity(t *testing.T) {
+func TestInfluencerEntity_NewInfluencerEntity(t *testing.T) {
 	createdAt := time.Now()
 	updatedAt := time.Now().Add(time.Hour * 24)
 
@@ -21,49 +22,27 @@ func TestNewInfluencerEntity(t *testing.T) {
 	}
 	actual := NewInfluencerEntity(1, "Elon Musk", createdAt, updatedAt)
 
-	if actual.ID != expected.ID {
-		t.Errorf("NewInfluencerEntity() ID = %d, want %d", actual.ID, expected.ID)
-	}
-
-	if actual.Name != expected.Name {
-		t.Errorf("NewInfluencerEntity() Name = %s, want %s", actual.Name, expected.Name)
-	}
-
-	if actual.CreatedAt != expected.CreatedAt {
-		t.Errorf("NewInfluencerEntity() CreatedAt = %s, want %s", actual.CreatedAt, expected.CreatedAt)
-	}
-
-	if actual.UpdatedAt != expected.UpdatedAt {
-		t.Errorf("NewInfluencerEntity() UpdatedAt = %s, want %s", actual.UpdatedAt, expected.UpdatedAt)
-	}
+	assert.Equal(t, expected, actual)
 }
 
-func TestTableName(t *testing.T) {
+func TestInfluencerEntity_TableName(t *testing.T) {
 	expected := "influencers"
 	actual := NewInfluencerEntity(1, "Elon Musk", time.Now(), time.Now()).TableName()
 
-	if actual != expected {
-		t.Errorf("TableName() = %s, want %s", actual, expected)
-	}
+	assert.Equal(t, expected, actual)
 }
 
-func TestToDTO(t *testing.T) {
+func TestInfluencerEntity_ToDTO(t *testing.T) {
 	createdAt := time.Now()
 	updatedAt := time.Now().Add(time.Hour * 24)
 
 	expected := dtos.NewInfluencerDTO(1, "Elon Musk", createdAt, updatedAt)
 	actual := NewInfluencerEntity(1, "Elon Musk", createdAt, updatedAt).ToDTO()
 
-	if actual.ID != expected.ID {
-		t.Errorf("ToDTO() ID = %d, want %d", actual.ID, expected.ID)
-	}
-
-	if actual.Name != expected.Name {
-		t.Errorf("ToDTO() Name = %s, want %s", actual.Name, expected.Name)
-	}
+	assert.Equal(t, expected, actual)
 }
 
-func TestFromDTO(t *testing.T) {
+func TestInfluencerEntity_FromDTO(t *testing.T) {
 	createdAt := time.Now()
 	updatedAt := time.Now().Add(time.Hour * 24)
 
@@ -71,11 +50,5 @@ func TestFromDTO(t *testing.T) {
 	actual := NewInfluencerEntity(0, "", time.Now(), time.Now())
 	actual.FromDTO(*dtos.NewInfluencerDTO(1, "Elon Musk", createdAt, updatedAt))
 
-	if actual.ID != expected.ID {
-		t.Errorf("FromDTO() ID = %d, want %d", actual.ID, expected.ID)
-	}
-
-	if actual.Name != expected.Name {
-		t.Errorf("FromDTO() Name = %s, want %s", actual.Name, expected.Name)
-	}
+	assert.Equal(t, expected, actual)
 }
