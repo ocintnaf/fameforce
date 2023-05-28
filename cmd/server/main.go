@@ -45,5 +45,5 @@ func main() {
 	healthController := controllers.NewHealthController(v1)
 	healthController.RegisterRoutes()
 
-	server.Listen(":3000")
+	server.Listen(":8080")
 }
