@@ -1,28 +1,34 @@
-FROM golang:1.20.4-alpine AS builder
+# Modules caching
+FROM golang:buster AS modules
 
-ENV CGO_ENABLED=0
-
-WORKDIR /build
+WORKDIR /modules
 
 COPY go.mod go.sum ./
 
 RUN go mod download
 
-COPY . ./
+# Builder
+FROM golang:buster AS builder
 
-RUN go build -o fameforce ./cmd/app
+COPY --from=modules /go/pkg /go/pkg
 
-WORKDIR /dist
+WORKDIR /app
 
-RUN cp /build/fameforce .
+COPY . .
 
-FROM alpine:3.14.2
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+ENV GOARCH=amd64
 
-RUN apk add --no-cache ca-certificates
+RUN go build -tags migrate -o /bin/app ./cmd/app
 
-COPY --from=builder /dist/fameforce /fameforce
-COPY --from=builder /build/config /config
+# App
+FROM scratch
+
+COPY --from=builder /app/config /config
+COPY --from=builder /app/migrations /migrations
+COPY --from=builder /bin/app /app
 
 EXPOSE 8080
 
-CMD ["/fameforce"]
+CMD ["/app"]

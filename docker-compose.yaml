@@ -2,7 +2,9 @@ version: "3.9"
 
 services:
   db:
+    container_name: db
     image: postgres:14.4-alpine
+    restart: always
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
@@ -11,6 +13,19 @@ services:
       POSTGRES_DB: postgres
     ports:
       - "5432:5432"
+
+  fameforce:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fameforce
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_HOST=db
+    depends_on:
+      - db
 
 volumes:
   db_data:

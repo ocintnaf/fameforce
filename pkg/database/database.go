@@ -27,6 +27,16 @@ func GetDSN(cfg Config) string {
 	)
 }
 
+func GetDatabaseURL(cfg Config) string {
+	return fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
+		cfg.User,
+		cfg.Password,
+		cfg.Host,
+		cfg.Port,
+		cfg.Name,
+	)
+}
+
 // NewConnection establishes a new database connection with the given config
 func NewConnection(cfg Config) (*sql.DB, error) {
 	db, err := sql.Open("postgres", GetDSN(cfg))
