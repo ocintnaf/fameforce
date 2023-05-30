@@ -10,7 +10,7 @@ spec:
         - image: gcr.io/$GCP_PROJECT_ID/$INSTANCE_NAME:$GITHUB_SHA
           ports:
             - containerPort: 8080 # TODO: Make it configurable
-        - env:
+          env:
             - name: DATABASE_HOST
               value: $DATABASE_HOST
             - name: DATABASE_PORT
