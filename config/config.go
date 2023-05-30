@@ -39,5 +39,7 @@ func Init() (*Config, error) {
 
 	err = viper.Unmarshal(&config)
 
+	log.Println(config)
+
 	return &config, err
 }
