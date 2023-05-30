@@ -1,0 +1,23 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: $INSTANCE_NAME
+spec:
+  template:
+    spec:
+      serviceAccountName: $GCP_CLOUD_RUN_SA_EMAIL
+      containers:
+        - image: gcr.io/$GCP_PROJECT_ID/$INSTANCE_NAME:$GITHUB_SHA
+          ports:
+            - containerPort: 8080 # TODO: Make it configurable
+        - env:
+            - name: DATABASE_HOST
+              value: $DATABASE_HOST
+            - name: DATABASE_PORT
+              value: $DATABASE_PORT
+            - name: DATABASE_NAME
+              value: $DATABASE_NAME
+            - name: DATABASE_USER
+              value: $DATABASE_USER
+            - name: DATABASE_PASSWORD
+              value: $DATABASE_PASSWORD
