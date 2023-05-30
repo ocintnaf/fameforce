@@ -4,6 +4,9 @@ metadata:
   name: $INSTANCE_NAME
 spec:
   template:
+    metadata:
+      annotations:
+        run.googleapis.com/vpc-access-connector: $GCP_VPC_CONNECTOR_NAME
     spec:
       serviceAccountName: $GCP_CLOUD_RUN_SA_EMAIL
       containers:

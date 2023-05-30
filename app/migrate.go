@@ -3,6 +3,7 @@
 package app
 
 import (
+	"errors"
 	"log"
 	"time"
 
@@ -46,11 +47,16 @@ func init() {
 		log.Fatal("Migrate: failed to connect to postgres. Error: ", err)
 	}
 
-	if err := m.Up(); err != nil {
+	if err := m.Up(); err != nil && !errors.Is(err, migrate.ErrNoChange) {
 		log.Fatal("Migrate: failed to run migrations. Error: ", err)
 	}
 
 	defer m.Close()
+
+	if errors.Is(err, migrate.ErrNoChange) {
+		log.Printf("Migrate: no change")
+		return
+	}
 
 	log.Println("Migrate: migrations ran successfully")
 }
