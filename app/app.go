@@ -40,12 +40,18 @@ func (a *app) initAndConnectDB() error {
 func (a *app) initAndStartServer() error {
 	a.fiber = fiber.New()
 
+	a.registerRoutes()
+
 	return a.fiber.Listen(":8080") // TODO: make port configurable
 }
 
-func (a *app) RegisterRoutes() {
+func (a *app) registerRoutes() {
 	api := a.fiber.Group("/api")
 	v1 := api.Group("/v1")
+
+	// Health routes
+	healthController := controllers.NewHealthController(a.fiber)
+	healthController.RegisterRoutes()
 
 	// Influencer routes
 	influencerGroup := v1.Group("/influencers")
