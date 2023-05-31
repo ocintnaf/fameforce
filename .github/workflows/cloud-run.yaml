@@ -59,4 +59,4 @@ jobs:
 
       - name: "Deploy to Cloud Run"
         run: |
-          gcloud beta run services replace ./service.yaml --platform managed --region ${{vars.INSTANCE_REGION}}
+          gcloud beta run services replace ./service.yaml --region ${{vars.INSTANCE_REGION}}
