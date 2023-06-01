@@ -1,44 +1,55 @@
 package http
 
-// HttpErrorResponse defines the structure of an error HTTP response.
-type HttpErrorResponse struct {
-	Error string `json:"error,omitempty"`
+type Status string
+
+const (
+	StatusSuccess Status = "success"
+	StatusFail    Status = "fail"
+	StatusError   Status = "error"
+)
+
+type BaseResponse struct {
+	Status Status `json:"status"`
 }
 
-// HttpSuccessResponse defines the structure of a success HTTP response.
-type HttpSuccessResponse struct {
-	Data interface{} `json:"data,omitempty"`
+type SuccessResponse struct {
+	BaseResponse
+	Data interface{} `json:"data"`
 }
 
-// HttpResponse defines the structure of a HTTP response.
-type HttpResponse struct {
-	HttpSuccessResponse
-	HttpErrorResponse
+type FailResponse struct {
+	BaseResponse
+	Data interface{} `json:"data"`
 }
 
-// NewHttpErrorResponse creates a new HttpErrorResponse.
-func NewHttpErrorResponse(err error) HttpResponse {
-	return HttpResponse{
-		HttpErrorResponse: HttpErrorResponse{
-			Error: err.Error(),
+type ErrorResponse struct {
+	BaseResponse
+	Message string `json:"message"`
+}
+
+func NewSuccessResponse(data interface{}) SuccessResponse {
+	return SuccessResponse{
+		BaseResponse: BaseResponse{
+			Status: StatusSuccess,
 		},
+		Data: data,
 	}
 }
 
-// NewHttpSuccessResponse creates a new HttpSuccessResponse.
-func NewHttpSuccessResponse(data interface{}) HttpResponse {
-	return HttpResponse{
-		HttpSuccessResponse: HttpSuccessResponse{
-			Data: data,
+func NewFailResponse(data interface{}) FailResponse {
+	return FailResponse{
+		BaseResponse: BaseResponse{
+			Status: StatusFail,
 		},
+		Data: data,
 	}
 }
 
-// NewHttpResponse creates a new HttpResponse.
-func NewHttpResponse(data interface{}, err error) HttpResponse {
-	if err != nil {
-		return NewHttpErrorResponse(err)
+func NewErrorResponse(err error) ErrorResponse {
+	return ErrorResponse{
+		BaseResponse: BaseResponse{
+			Status: StatusError,
+		},
+		Message: err.Error(),
 	}
-
-	return NewHttpSuccessResponse(data)
 }

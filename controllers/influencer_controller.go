@@ -28,10 +28,12 @@ func NewInfluencerController(
 func (ic *influencerController) GetAll(ctx *fiber.Ctx) error {
 	influencerDTOs, err := ic.influencerUsecase.GetAll(ctx)
 	if err != nil {
-		return ctx.Status(fiber.StatusInternalServerError).JSON(http.NewHttpResponse(nil, err))
+		return ctx.Status(fiber.StatusInternalServerError).JSON(http.NewErrorResponse(err))
 	}
 
-	return ctx.Status(fiber.StatusOK).JSON(http.NewHttpResponse(influencerDTOs, nil))
+	return ctx.Status(fiber.StatusOK).JSON(http.NewSuccessResponse(fiber.Map{
+		"influencers": influencerDTOs,
+	}))
 }
 
 func (ic *influencerController) RegisterRoutes() {
