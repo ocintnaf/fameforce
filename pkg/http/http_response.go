@@ -14,12 +14,12 @@ type BaseResponse struct {
 
 type SuccessResponse struct {
 	BaseResponse
-	Data interface{} `json:"data"`
+	Data any `json:"data"`
 }
 
 type FailResponse struct {
 	BaseResponse
-	Data interface{} `json:"data"`
+	Data any `json:"data"`
 }
 
 type ErrorResponse struct {
@@ -27,7 +27,7 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
-func NewSuccessResponse(data interface{}) SuccessResponse {
+func NewSuccessResponse(data any) SuccessResponse {
 	return SuccessResponse{
 		BaseResponse: BaseResponse{
 			Status: StatusSuccess,
@@ -36,7 +36,7 @@ func NewSuccessResponse(data interface{}) SuccessResponse {
 	}
 }
 
-func NewFailResponse(data interface{}) FailResponse {
+func NewFailResponse(data any) FailResponse {
 	return FailResponse{
 		BaseResponse: BaseResponse{
 			Status: StatusFail,

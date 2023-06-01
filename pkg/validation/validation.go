@@ -9,7 +9,7 @@ import (
 	"github.com/ocintnaf/fameforce/pkg/common"
 )
 
-func Validate(data interface{}) []string {
+func Validate(data any) []string {
 	validate := validator.New()
 
 	translator := common.EnglishTranslator()
