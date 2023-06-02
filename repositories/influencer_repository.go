@@ -1,8 +1,7 @@
 package repositories
 
 import (
-	"database/sql"
-
+	"github.com/jmoiron/sqlx"
 	"github.com/ocintnaf/fameforce/entities"
 )
 
@@ -11,14 +10,14 @@ const (
 )
 
 type influencerRepository struct {
-	db *sql.DB
+	db *sqlx.DB
 }
 
 type InfluencerRepository interface {
 	FindAll() ([]entities.InfluencerEntity, error)
 }
 
-func NewInfluencerRepository(db *sql.DB) *influencerRepository {
+func NewInfluencerRepository(db *sqlx.DB) *influencerRepository {
 	return &influencerRepository{db: db}
 }
 

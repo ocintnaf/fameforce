@@ -2,9 +2,9 @@ package app
 
 import (
 	"context"
-	"database/sql"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/jmoiron/sqlx"
 	"github.com/ocintnaf/fameforce/config"
 	"github.com/ocintnaf/fameforce/controllers"
 	"github.com/ocintnaf/fameforce/pkg/database"
@@ -16,7 +16,7 @@ type app struct {
 	cfg   *config.Config
 	fiber *fiber.App
 	ctx   context.Context
-	db    *sql.DB
+	db    *sqlx.DB
 }
 
 func Init(cfg *config.Config) *app {

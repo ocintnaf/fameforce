@@ -1,9 +1,9 @@
 package database
 
 import (
-	"database/sql"
 	"fmt"
 
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
 
@@ -38,13 +38,8 @@ func GetDatabaseURL(cfg Config) string {
 }
 
 // NewConnection establishes a new database connection with the given config
-func NewConnection(cfg Config) (*sql.DB, error) {
-	db, err := sql.Open("postgres", GetDSN(cfg))
-	if err != nil {
-		return nil, err
-	}
-
-	err = db.Ping()
+func NewConnection(cfg Config) (*sqlx.DB, error) {
+	db, err := sqlx.Connect("postgres", GetDSN(cfg))
 	if err != nil {
 		return nil, err
 	}
