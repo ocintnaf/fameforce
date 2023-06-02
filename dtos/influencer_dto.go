@@ -3,10 +3,10 @@ package dtos
 import "time"
 
 type InfluencerDTO struct {
-	ID        uint      `json:"id,omitempty"`
-	Name      string    `json:"name,omitempty"`
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	ID        uint      `json:"id"`
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 func NewInfluencerDTO(id uint, name string, createdAt time.Time, updatedAt time.Time) *InfluencerDTO {
