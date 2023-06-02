@@ -26,7 +26,7 @@ func NewInfluencerController(
 }
 
 func (ic *influencerController) GetAll(ctx *fiber.Ctx) error {
-	influencerDTOs, err := ic.influencerUsecase.GetAll(ctx)
+	influencerDTOs, err := ic.influencerUsecase.GetAll()
 	if err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(http.NewErrorResponse(err))
 	}

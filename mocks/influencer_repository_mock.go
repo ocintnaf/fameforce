@@ -17,3 +17,8 @@ func (m *influencerRepositoryMock) FindAll() ([]entities.InfluencerEntity, error
 	args := m.Called()
 	return args.Get(0).([]entities.InfluencerEntity), args.Error(1)
 }
+
+func (m *influencerRepositoryMock) Save(e entities.InfluencerEntity) (entities.InfluencerEntity, error) {
+	args := m.Called()
+	return args.Get(0).(entities.InfluencerEntity), args.Error(1)
+}

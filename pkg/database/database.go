@@ -3,8 +3,8 @@ package database
 import (
 	"fmt"
 
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 // Postgres connection config
@@ -37,12 +37,22 @@ func GetDatabaseURL(cfg Config) string {
 	)
 }
 
-// NewConnection establishes a new database connection with the given config
-func NewConnection(cfg Config) (*sqlx.DB, error) {
-	db, err := sqlx.Connect("postgres", GetDSN(cfg))
+// NewConnection establishes a new database connection with the given config.
+func NewConnection(cfg Config) (*gorm.DB, error) {
+	db, err := gorm.Open(postgres.Open(GetDSN(cfg)), &gorm.Config{})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("[database.NewConnection] Error connecting to postgres instance: %w", err)
 	}
 
 	return db, nil
+}
+
+// CloseConnection closes the database connection.
+func CloseConnection(db *gorm.DB) error {
+	sqlDB, err := db.DB()
+	if err != nil {
+		return err
+	}
+
+	return sqlDB.Close()
 }

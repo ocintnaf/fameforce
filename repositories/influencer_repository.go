@@ -1,50 +1,32 @@
 package repositories
 
 import (
-	"github.com/jmoiron/sqlx"
 	"github.com/ocintnaf/fameforce/entities"
-)
-
-const (
-	findAllSqlStatement = "SELECT * FROM influencers"
+	"gorm.io/gorm"
 )
 
 type influencerRepository struct {
-	db *sqlx.DB
+	db *gorm.DB
 }
 
 type InfluencerRepository interface {
 	FindAll() ([]entities.InfluencerEntity, error)
+	Save(e entities.InfluencerEntity) (entities.InfluencerEntity, error)
 }
 
-func NewInfluencerRepository(db *sqlx.DB) *influencerRepository {
+func NewInfluencerRepository(db *gorm.DB) *influencerRepository {
 	return &influencerRepository{db: db}
 }
 
-func (r *influencerRepository) FindAll() ([]entities.InfluencerEntity, error) {
+func (ir *influencerRepository) FindAll() ([]entities.InfluencerEntity, error) {
 	var influencers []entities.InfluencerEntity
 
-	rows, err := r.db.Query(findAllSqlStatement)
-	if err != nil {
-		return nil, err
-	}
-
-	defer rows.Close()
-
-	for rows.Next() {
-		var influencer entities.InfluencerEntity
-
-		if err := rows.Scan(
-			&influencer.ID,
-			&influencer.Name,
-			&influencer.CreatedAt,
-			&influencer.UpdatedAt,
-		); err != nil {
-			return nil, err
-		}
-
-		influencers = append(influencers, influencer)
-	}
+	ir.db.Find(&influencers)
 
 	return influencers, nil
+}
+
+func (ir *influencerRepository) Save(e entities.InfluencerEntity) (entities.InfluencerEntity, error) {
+	result := ir.db.Save(&e)
+	return e, result.Error
 }

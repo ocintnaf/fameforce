@@ -4,19 +4,19 @@ import (
 	"context"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/jmoiron/sqlx"
 	"github.com/ocintnaf/fameforce/config"
 	"github.com/ocintnaf/fameforce/controllers"
 	"github.com/ocintnaf/fameforce/pkg/database"
 	"github.com/ocintnaf/fameforce/repositories"
 	"github.com/ocintnaf/fameforce/usecases"
+	"gorm.io/gorm"
 )
 
 type app struct {
 	cfg   *config.Config
 	fiber *fiber.App
 	ctx   context.Context
-	db    *sqlx.DB
+	db    *gorm.DB
 }
 
 func Init(cfg *config.Config) *app {
@@ -74,5 +74,5 @@ func (a *app) Run() error {
 }
 
 func (a *app) Shutdown() error {
-	return a.db.Close()
+	return database.CloseConnection(a.db)
 }

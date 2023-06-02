@@ -10,6 +10,6 @@ type BaseEntity struct {
 
 type Entity interface {
 	TableName() string
-	ToDTO() *any
-	FromDTO(dto *any)
+	ToDTO() any
+	FromDTO(dto any)
 }

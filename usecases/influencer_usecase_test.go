@@ -25,7 +25,7 @@ func TestInfluencerUsecase_GetAll(t *testing.T) {
 
 		influencerUsecase := NewInfluencerUsecase(influencerRepository)
 
-		influencerDTOs, err := influencerUsecase.GetAll(nil)
+		influencerDTOs, err := influencerUsecase.GetAll()
 
 		assert.Error(t, err)
 		assert.Nil(t, influencerDTOs)
@@ -51,7 +51,7 @@ func TestInfluencerUsecase_GetAll(t *testing.T) {
 
 		influencerUsecase := NewInfluencerUsecase(influencerRepository)
 
-		influencerDTOs, err := influencerUsecase.GetAll(nil)
+		influencerDTOs, err := influencerUsecase.GetAll()
 
 		assert.NoError(t, err)
 		assert.NotNil(t, influencerDTOs)

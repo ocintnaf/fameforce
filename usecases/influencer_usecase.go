@@ -3,7 +3,6 @@ package usecases
 import (
 	"fmt"
 
-	"github.com/gofiber/fiber/v2"
 	"github.com/ocintnaf/fameforce/dtos"
 	"github.com/ocintnaf/fameforce/repositories"
 )
@@ -13,14 +12,14 @@ type influencerUsecase struct {
 }
 
 type InfluencerUsecase interface {
-	GetAll(ctx *fiber.Ctx) ([]dtos.InfluencerDTO, error)
+	GetAll() ([]dtos.InfluencerDTO, error)
 }
 
 func NewInfluencerUsecase(influencerRepository repositories.InfluencerRepository) *influencerUsecase {
 	return &influencerUsecase{influencerRepository: influencerRepository}
 }
 
-func (iu *influencerUsecase) GetAll(ctx *fiber.Ctx) ([]dtos.InfluencerDTO, error) {
+func (iu *influencerUsecase) GetAll() ([]dtos.InfluencerDTO, error) {
 	var influencerDTOs []dtos.InfluencerDTO
 
 	influencerEntities, err := iu.influencerRepository.FindAll()
