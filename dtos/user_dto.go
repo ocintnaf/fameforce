@@ -8,8 +8,8 @@ import (
 
 type UserDTO struct {
 	ID        string         `json:"id" validate:"required"`
-	Email     string         `json:"email"`
-	Type      types.UserType `json:"type"`
+	Email     string         `json:"email" validate:"required,email"`
+	Type      types.UserType `json:"type" validate:"required,oneof=influencer sponsor"`
 	CreatedAt time.Time      `json:"createdAt"`
 	UpdatedAt time.Time      `json:"updatedAt"`
 }
