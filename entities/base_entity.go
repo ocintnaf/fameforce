@@ -2,8 +2,8 @@ package entities
 
 import "time"
 
-type BaseEntity struct {
-	ID        uint
+type BaseEntity[TID any] struct {
+	ID        TID
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

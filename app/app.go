@@ -67,12 +67,12 @@ func (a *app) registerRoutes() {
 	healthController := controllers.NewHealthController(a.fiber)
 	healthController.RegisterRoutes()
 
-	// Influencer routes
-	influencerGroup := v1.Group("/influencers")
-	influencerRepository := repositories.NewInfluencerRepository(a.db)
-	influencerUsecase := usecases.NewInfluencerUsecase(influencerRepository)
-	influencerController := controllers.NewInfluencerController(influencerGroup, influencerUsecase)
-	influencerController.RegisterRoutes()
+	// User routes
+	userGroup := v1.Group("/users")
+	userRepository := repositories.NewUserRepository(a.db)
+	userUsecase := usecases.NewUserUsecase(userRepository)
+	userController := controllers.NewUserController(userGroup, userUsecase)
+	userController.RegisterRoutes()
 }
 
 func (a *app) Run() error {
