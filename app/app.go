@@ -1,8 +1,6 @@
 package app
 
 import (
-	"context"
-
 	firebase "firebase.google.com/go/v4"
 	"github.com/gofiber/fiber/v2"
 	"github.com/ocintnaf/fameforce/config"
@@ -17,7 +15,6 @@ import (
 type app struct {
 	cfg      *config.Config
 	fiber    *fiber.App
-	ctx      context.Context
 	db       *gorm.DB
 	firebase *firebase.App
 }
@@ -25,7 +22,6 @@ type app struct {
 func Init(cfg *config.Config) *app {
 	return &app{
 		cfg: cfg,
-		ctx: context.Background(),
 	}
 }
 
