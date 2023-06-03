@@ -9,14 +9,12 @@ import (
 
 type UserEntity struct {
 	BaseEntity[string]
-	Name  string
 	Email string
 	Type  types.UserType
 }
 
 func NewUserEntity(
 	id string,
-	name string,
 	email string,
 	userType types.UserType,
 	createdAt time.Time,
@@ -28,7 +26,6 @@ func NewUserEntity(
 			CreatedAt: createdAt,
 			UpdatedAt: updatedAt,
 		},
-		Name:  name,
 		Email: email,
 		Type:  userType,
 	}
@@ -39,12 +36,11 @@ func (ue *UserEntity) TableName() string {
 }
 
 func (ue *UserEntity) ToDTO() *dtos.UserDTO {
-	return dtos.NewUserDTO(ue.ID, ue.Name, ue.Email, ue.Type, ue.CreatedAt, ue.UpdatedAt)
+	return dtos.NewUserDTO(ue.ID, ue.Email, ue.Type, ue.CreatedAt, ue.UpdatedAt)
 }
 
 func (ue *UserEntity) FromDTO(dto dtos.UserDTO) {
 	ue.ID = dto.ID
-	ue.Name = dto.Name
 	ue.Email = dto.Email
 	ue.Type = dto.Type
 	ue.CreatedAt = dto.CreatedAt

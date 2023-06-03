@@ -7,8 +7,7 @@ import (
 )
 
 type UserDTO struct {
-	ID        string         `json:"id"`
-	Name      string         `json:"name"`
+	ID        string         `json:"id" validate:"required"`
 	Email     string         `json:"email"`
 	Type      types.UserType `json:"type"`
 	CreatedAt time.Time      `json:"createdAt"`
@@ -17,7 +16,6 @@ type UserDTO struct {
 
 func NewUserDTO(
 	id string,
-	name string,
 	email string,
 	userType types.UserType,
 	createdAt time.Time,
@@ -25,7 +23,6 @@ func NewUserDTO(
 ) *UserDTO {
 	return &UserDTO{
 		ID:        id,
-		Name:      name,
 		Email:     email,
 		Type:      userType,
 		CreatedAt: createdAt,

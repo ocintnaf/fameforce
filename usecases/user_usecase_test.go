@@ -35,9 +35,9 @@ func TestUserUsecase_GetAll(t *testing.T) {
 	t.Run("should return a list of userDTOs", func(t *testing.T) {
 		now := time.Now()
 
-		userEntityOne := *entities.NewUserEntity("cf", "Chiara Ferragni", "cf@gmail.com", types.UserTypeInfluencer, now, now)
-		userEntityTwo := *entities.NewUserEntity("cr", "Cristiano Ronaldo", "cr@gmail.com", types.UserTypeInfluencer, now, now)
-		userEntityThree := *entities.NewUserEntity("ar", "Ariana Grande", "ag@gmail.com", types.UserTypeInfluencer, now, now)
+		userEntityOne := *entities.NewUserEntity("cf", "cf@gmail.com", types.UserTypeInfluencer, now, now)
+		userEntityTwo := *entities.NewUserEntity("cr", "cr@gmail.com", types.UserTypeInfluencer, now, now)
+		userEntityThree := *entities.NewUserEntity("ar", "ag@gmail.com", types.UserTypeInfluencer, now, now)
 
 		userDTOOne := *userEntityOne.ToDTO()
 		userDTOTwo := *userEntityTwo.ToDTO()
