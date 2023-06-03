@@ -3,20 +3,23 @@ package app
 import (
 	"context"
 
+	firebase "firebase.google.com/go/v4"
 	"github.com/gofiber/fiber/v2"
 	"github.com/ocintnaf/fameforce/config"
 	"github.com/ocintnaf/fameforce/controllers"
 	"github.com/ocintnaf/fameforce/pkg/database"
+	"github.com/ocintnaf/fameforce/pkg/gcloud"
 	"github.com/ocintnaf/fameforce/repositories"
 	"github.com/ocintnaf/fameforce/usecases"
 	"gorm.io/gorm"
 )
 
 type app struct {
-	cfg   *config.Config
-	fiber *fiber.App
-	ctx   context.Context
-	db    *gorm.DB
+	cfg      *config.Config
+	fiber    *fiber.App
+	ctx      context.Context
+	db       *gorm.DB
+	firebase *firebase.App
 }
 
 func Init(cfg *config.Config) *app {
@@ -33,6 +36,17 @@ func (a *app) initAndConnectDB() error {
 	}
 
 	a.db = db
+
+	return nil
+}
+
+func (a *app) initAndConnectFirebaseApp() error {
+	app, err := gcloud.NewFirebaseApp()
+	if err != nil {
+		return err
+	}
+
+	a.firebase = app
 
 	return nil
 }
@@ -63,6 +77,10 @@ func (a *app) registerRoutes() {
 
 func (a *app) Run() error {
 	if err := a.initAndConnectDB(); err != nil {
+		return err
+	}
+
+	if err := a.initAndConnectFirebaseApp(); err != nil {
 		return err
 	}
 
