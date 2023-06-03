@@ -34,9 +34,9 @@ func TestInfluencerUsecase_GetAll(t *testing.T) {
 	t.Run("should return a list of influencerDTOs", func(t *testing.T) {
 		now := time.Now()
 
-		influencerEntityOne := *entities.NewInfluencerEntity(1, "Chiara Ferragni", now, now)
-		influencerEntityTwo := *entities.NewInfluencerEntity(2, "Cristiano Ronaldo", now, now)
-		influencerEntityThree := *entities.NewInfluencerEntity(3, "Ariana Grande", now, now)
+		influencerEntityOne := *entities.NewInfluencerEntity(1, "Chiara Ferragni", "cf@gmail.com", now, now)
+		influencerEntityTwo := *entities.NewInfluencerEntity(2, "Cristiano Ronaldo", "cr@gmail.com", now, now)
+		influencerEntityThree := *entities.NewInfluencerEntity(3, "Ariana Grande", "ag@gmail.com", now, now)
 
 		influencerDTOOne := *influencerEntityOne.ToDTO()
 		influencerDTOTwo := *influencerEntityTwo.ToDTO()
