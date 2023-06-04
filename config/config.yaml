@@ -4,3 +4,5 @@ database:
   name: postgres
   user: postgres
   password: postgres
+gcp:
+  project_id: fameforce-388015

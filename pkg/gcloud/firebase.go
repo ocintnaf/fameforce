@@ -7,8 +7,12 @@ import (
 	firebase "firebase.google.com/go/v4"
 )
 
-func NewFirebaseApp() (*firebase.App, error) {
-	app, err := firebase.NewApp(context.Background(), nil)
+func NewFirebaseApp(cfg Config) (*firebase.App, error) {
+	config := &firebase.Config{
+		ProjectID: cfg.ProjectID,
+	}
+
+	app, err := firebase.NewApp(context.Background(), config)
 	if err != nil {
 		return nil, fmt.Errorf("[gcloud.NewFirebaseApp] Error initializing Firebase app: %w", err)
 	}

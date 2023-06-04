@@ -24,3 +24,5 @@ spec:
               value: "$DATABASE_USER"
             - name: DATABASE_PASSWORD
               value: "$DATABASE_PASSWORD"
+            - name: GCP_PROJECT_ID
+              value: "$GCP_PROJECT_ID"

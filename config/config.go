@@ -7,11 +7,13 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/ocintnaf/fameforce/pkg/database"
+	"github.com/ocintnaf/fameforce/pkg/gcloud"
 	"github.com/spf13/viper"
 )
 
 type Config struct {
 	Database database.Config `mapstructure:"database"`
+	GCloud   gcloud.Config   `mapstructure:"gcp"`
 }
 
 func Init() (*Config, error) {

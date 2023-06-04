@@ -44,7 +44,7 @@ func (a *app) initAndConnectDB() error {
 }
 
 func (a *app) initAndConnectFirebaseApp() error {
-	app, err := gcloud.NewFirebaseApp()
+	app, err := gcloud.NewFirebaseApp(a.cfg.GCloud)
 	if err != nil {
 		return err
 	}
@@ -85,6 +85,9 @@ func (a *app) registerRoutes() {
 	userController := controllers.NewUserController(userUsecase)
 
 	userGroup.Get("/", authMiddleware, userController.GetAll)
+
+	// TODO: Remove
+	userGroup.Get("/test-public", userController.GetAll)
 }
 
 func (a *app) Run() error {
