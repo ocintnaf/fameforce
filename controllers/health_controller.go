@@ -1,9 +1,8 @@
 package controllers
 
 import (
-	"time"
-
 	"github.com/gofiber/fiber/v2"
+	"github.com/ocintnaf/fameforce/pkg/http"
 )
 
 type healthController struct {
@@ -28,13 +27,5 @@ func NewHealthController(router fiber.Router) *healthController {
 // Returns a 200 OK status code if the application is healthy.
 // Return a 503 Service Unavailable status code if the application is unhealthy.
 func (hc *healthController) Health(ctx *fiber.Ctx) error {
-	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status":    "ok",
-		"timestamp": time.Now(),
-	})
-}
-
-// RegisterRoutes registers the health controller routes.
-func (hc *healthController) RegisterRoutes() {
-	hc.Router.Get("/health", hc.Health)
+	return ctx.Status(fiber.StatusOK).JSON(http.NewSuccessResponse("Central Cee is shit"))
 }

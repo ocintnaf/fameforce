@@ -89,8 +89,9 @@ func (a *app) registerRoutes() {
 	authMiddleware := middlewares.NewAuthMiddleware(a.firebase.auth)
 
 	// Health routes
+	healthGroup := a.fiber.Group("/health")
 	healthController := controllers.NewHealthController(a.fiber)
-	healthController.RegisterRoutes()
+	healthGroup.Get("/", healthController.Health)
 
 	// User routes
 	userGroup := v1.Group("/users")
