@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"firebase.google.com/go/v4/auth"
 	"github.com/gofiber/fiber/v2"
 	"github.com/ocintnaf/fameforce/pkg/helpers"
 	"github.com/ocintnaf/fameforce/pkg/http"
@@ -20,7 +21,7 @@ func NewAuthMiddleware(verifier types.IDTokenVerifier) fiber.Handler {
 	}
 }
 
-func getAndVerifyIDToken(ctx *fiber.Ctx, verifier types.IDTokenVerifier) (*types.BaseIDToken, error) {
+func getAndVerifyIDToken(ctx *fiber.Ctx, verifier types.IDTokenVerifier) (*auth.Token, error) {
 	idToken, err := helpers.GetBearerToken(ctx)
 	if err != nil {
 		return nil, err

@@ -7,7 +7,6 @@ import (
 )
 
 type userController struct {
-	router      fiber.Router
 	userUsecase usecases.UserUsecase
 }
 
@@ -15,12 +14,8 @@ type UserController interface {
 	GetAll(ctx *fiber.Ctx) error
 }
 
-func NewUserController(
-	router fiber.Router,
-	userUsecase usecases.UserUsecase,
-) *userController {
+func NewUserController(userUsecase usecases.UserUsecase) *userController {
 	return &userController{
-		router:      router,
 		userUsecase: userUsecase,
 	}
 }
@@ -34,8 +29,4 @@ func (uc *userController) GetAll(ctx *fiber.Ctx) error {
 	return ctx.Status(fiber.StatusOK).JSON(http.NewSuccessResponse(fiber.Map{
 		"users": userDTOs,
 	}))
-}
-
-func (ic *userController) RegisterRoutes() {
-	ic.router.Get("/", ic.GetAll)
 }

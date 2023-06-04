@@ -6,13 +6,13 @@ import (
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	en_translations "github.com/go-playground/validator/v10/translations/en"
-	"github.com/ocintnaf/fameforce/pkg/common"
+	"github.com/ocintnaf/fameforce/pkg/helpers"
 )
 
 func Validate(data any) []string {
 	validate := validator.New()
 
-	translator := common.EnglishTranslator()
+	translator := helpers.EnglishTranslator()
 	_ = en_translations.RegisterDefaultTranslations(validate, translator)
 
 	err := validate.Struct(data)
