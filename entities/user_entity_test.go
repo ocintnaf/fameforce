@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestUserEntity_NewUserEntity(t *testing.T) {
+func TestNewUserEntity(t *testing.T) {
 	createdAt := time.Now()
 	updatedAt := time.Now().Add(time.Hour * 24)
 

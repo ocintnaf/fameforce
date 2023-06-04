@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestUserUsecase_NewUserUsecase(t *testing.T) {
+func TestNewUserUsecase(t *testing.T) {
 	t.Run("should return an instance of userUsecase with the given userRepository", func(t *testing.T) {
 		userRepository := mocks.NewUserRepositoryMock()
 		userUsecase := NewUserUsecase(userRepository)

@@ -1,5 +1,6 @@
 package http
 
+// TODO: Move under types/http_types.go
 type Status string
 
 const (
