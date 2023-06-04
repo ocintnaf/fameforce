@@ -55,6 +55,7 @@ jobs:
           DATABASE_USER: ${{vars.DATABASE_USER}}
           DATABASE_NAME: ${{vars.DATABASE_NAME}}
           DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
+          APP_ENV: ${{vars.APP_ENV}}
         run: cat ./cloud-run/service.yaml | envsubst > ./service.yaml
 
       - name: "Deploy to Cloud Run"

@@ -26,3 +26,5 @@ spec:
               value: "$DATABASE_PASSWORD"
             - name: GCP_PROJECT_ID
               value: "$GCP_PROJECT_ID"
+            - name: APP_ENV
+              value: "$APP_ENV"

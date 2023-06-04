@@ -12,6 +12,7 @@ import (
 )
 
 type Config struct {
+	AppEnv   string          `mapstructure:"app_env"`
 	Database database.Config `mapstructure:"database"`
 	GCloud   gcloud.Config   `mapstructure:"gcp"`
 }

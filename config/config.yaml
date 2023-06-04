@@ -1,3 +1,4 @@
+app_env: development
 database:
   host: localhost
   port: 5432
