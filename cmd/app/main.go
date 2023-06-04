@@ -13,14 +13,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	app := app.Init(config)
+	a := app.Init(config)
 
-	if err := app.Run(); err != nil {
+	if err := a.Run(); err != nil {
 		log.Fatal(err)
 	}
 
 	defer func() {
-		if err := app.Shutdown(); err != nil {
+		if err := a.Shutdown(); err != nil {
 			log.Fatal(err)
 		}
 	}()

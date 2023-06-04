@@ -10,9 +10,11 @@ import (
 	"github.com/ocintnaf/fameforce/controllers"
 	"github.com/ocintnaf/fameforce/pkg/database"
 	"github.com/ocintnaf/fameforce/pkg/gcloud"
+	"github.com/ocintnaf/fameforce/pkg/logger"
 	"github.com/ocintnaf/fameforce/pkg/middlewares"
 	"github.com/ocintnaf/fameforce/repositories"
 	"github.com/ocintnaf/fameforce/usecases"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -20,6 +22,7 @@ type app struct {
 	cfg      *config.Config
 	fiber    *fiber.App
 	db       *gorm.DB
+	logger   *zap.Logger
 	firebase struct {
 		app  *firebase.App
 		auth *auth.Client
@@ -32,7 +35,18 @@ func Init(cfg *config.Config) *app {
 	}
 }
 
-func (a *app) initAndConnectDB() error {
+func (a *app) initLogger() error {
+	logger, err := logger.NewLogger(a.cfg.AppEnv)
+	if err != nil {
+		return err
+	}
+
+	a.logger = logger
+
+	return nil
+}
+
+func (a *app) initDB() error {
 	db, err := database.NewConnection(a.cfg.Database)
 	if err != nil {
 		return err
@@ -43,7 +57,7 @@ func (a *app) initAndConnectDB() error {
 	return nil
 }
 
-func (a *app) initAndConnectFirebaseApp() error {
+func (a *app) initFirebaseApp() error {
 	app, err := gcloud.NewFirebaseApp(a.cfg.GCloud)
 	if err != nil {
 		return err
@@ -60,7 +74,7 @@ func (a *app) initAndConnectFirebaseApp() error {
 	return nil
 }
 
-func (a *app) initAndStartServer() error {
+func (a *app) initServer() error {
 	a.fiber = fiber.New()
 
 	a.registerRoutes()
@@ -89,15 +103,19 @@ func (a *app) registerRoutes() {
 }
 
 func (a *app) Run() error {
-	if err := a.initAndConnectDB(); err != nil {
+	if err := a.initLogger(); err != nil {
 		return err
 	}
 
-	if err := a.initAndConnectFirebaseApp(); err != nil {
+	if err := a.initDB(); err != nil {
 		return err
 	}
 
-	if err := a.initAndStartServer(); err != nil {
+	if err := a.initFirebaseApp(); err != nil {
+		return err
+	}
+
+	if err := a.initServer(); err != nil {
 		return err
 	}
 
@@ -105,5 +123,15 @@ func (a *app) Run() error {
 }
 
 func (a *app) Shutdown() error {
-	return database.CloseConnection(a.db)
+	err := database.CloseConnection(a.db)
+	if err != nil {
+		return err
+	}
+
+	err = a.logger.Sync()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
