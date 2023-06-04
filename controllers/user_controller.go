@@ -36,13 +36,11 @@ func (uc *userController) Create(ctx *fiber.Ctx) error {
 	userDTO := dtos.UserDTO{}
 
 	if err := ctx.BodyParser(&userDTO); err != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(http.NewFailResponse("Invalid payload"))
+		return ctx.Status(fiber.StatusBadRequest).JSON(http.NewFailResponse("invalid payload"))
 	}
 
 	if validationErrs := helpers.Validate(userDTO); validationErrs != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(http.NewFailResponse(fiber.Map{
-			"validationErrors": validationErrs,
-		}))
+		return ctx.Status(fiber.StatusBadRequest).JSON(http.NewFailResponse(validationErrs))
 	}
 
 	userID := ctx.Locals("UserID").(string)

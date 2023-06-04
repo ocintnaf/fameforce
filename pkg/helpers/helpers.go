@@ -2,7 +2,7 @@ package helpers
 
 import (
 	"errors"
-	"fmt"
+	"reflect"
 	"strings"
 
 	"github.com/go-playground/locales/en"
@@ -28,35 +28,44 @@ func GetBearerToken(headerGetter types.HeaderGetter) (string, error) {
 		return "", errors.New("invalid bearer token format")
 	}
 
+	if len(splitToken[1]) == 0 {
+		return "", errors.New("missing bearer token")
+	}
+
 	bearerToken := strings.TrimSpace(splitToken[1])
 
 	return bearerToken, nil
 }
 
-func Validate(data any) []string {
+type ValidationErrors map[string]string
+
+func Validate(data any) ValidationErrors {
 	validate := validator.New()
+
+	// In order to return the field names defined in the json representations of struct
+	validate.RegisterTagNameFunc(func(fld reflect.StructField) string {
+		name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]
+		// skip if tag key says it should be ignored
+		if name == "-" {
+			return ""
+		}
+		return name
+	})
 
 	translator := EnglishTranslator()
 	_ = en_translations.RegisterDefaultTranslations(validate, translator)
 
-	err := validate.Struct(data)
-	errs := TranslateError(err, translator)
-
-	return errs
-}
-
-func TranslateError(err error, trans ut.Translator) []string {
-	if err == nil {
+	validationErrors := validate.Struct(data)
+	if validationErrors == nil {
 		return nil
 	}
 
-	validatorErrs := err.(validator.ValidationErrors)
-	var errs []string
+	res := make(ValidationErrors)
 
-	for _, e := range validatorErrs {
-		translatedErr := fmt.Errorf(e.Translate(trans))
-		errs = append(errs, translatedErr.Error())
+	for _, err := range validationErrors.(validator.ValidationErrors) {
+		field := err.Field()
+		res[field] = err.Translate(translator)
 	}
 
-	return errs
+	return res
 }
