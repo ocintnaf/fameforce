@@ -18,7 +18,7 @@ func (m *userRepositoryMock) FindAll() ([]entities.UserEntity, error) {
 	return args.Get(0).([]entities.UserEntity), args.Error(1)
 }
 
-func (m *userRepositoryMock) Save(e entities.UserEntity) (entities.UserEntity, error) {
+func (m *userRepositoryMock) Create(e *entities.UserEntity) (*entities.UserEntity, error) {
 	args := m.Called()
-	return args.Get(0).(entities.UserEntity), args.Error(1)
+	return args.Get(0).(*entities.UserEntity), args.Error(1)
 }

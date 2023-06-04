@@ -11,7 +11,7 @@ type userRepository struct {
 
 type UserRepository interface {
 	FindAll() ([]entities.UserEntity, error)
-	Save(e entities.UserEntity) (entities.UserEntity, error)
+	Create(e *entities.UserEntity) (*entities.UserEntity, error)
 }
 
 func NewUserRepository(db *gorm.DB) *userRepository {
@@ -26,7 +26,7 @@ func (ur *userRepository) FindAll() ([]entities.UserEntity, error) {
 	return users, nil
 }
 
-func (ir *userRepository) Save(e entities.UserEntity) (entities.UserEntity, error) {
-	result := ir.db.Save(&e)
+func (ir *userRepository) Create(e *entities.UserEntity) (*entities.UserEntity, error) {
+	result := ir.db.Create(e)
 	return e, result.Error
 }

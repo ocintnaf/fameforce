@@ -85,9 +85,7 @@ func (a *app) registerRoutes() {
 	userController := controllers.NewUserController(userUsecase)
 
 	userGroup.Get("/", authMiddleware, userController.GetAll)
-
-	// TODO: Remove
-	userGroup.Get("/test-public", userController.GetAll)
+	userGroup.Post("/", authMiddleware, userController.Create)
 }
 
 func (a *app) Run() error {
