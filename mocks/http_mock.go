@@ -15,3 +15,17 @@ func (m *headerGetterMock) Get(key string, defaultValue ...string) string {
 
 	return args.Get(0).(string)
 }
+
+type ctxLocalerMock struct {
+	mock.Mock
+}
+
+func NewCtxLocalerMock() *ctxLocalerMock {
+	return &ctxLocalerMock{}
+}
+
+func (m *ctxLocalerMock) Locals(key interface{}, value ...interface{}) interface{} {
+	args := m.Called(key, value)
+
+	return args.Get(0)
+}

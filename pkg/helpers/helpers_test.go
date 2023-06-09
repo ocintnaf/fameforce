@@ -114,3 +114,19 @@ func TestValidate(t *testing.T) {
 		})
 	}
 }
+
+func TestGetCtxLocal(t *testing.T) {
+	t.Run("should return an error if the given key is not present", func(t *testing.T) {
+		ctxLocalerMock := mocks.NewCtxLocalerMock()
+
+		ctxLocalerMock.On("Locals", mock.Anything, mock.Anything).Return(nil)
+
+		actualValue, actualErr := GetCtxLocal[string](ctxLocalerMock, "MyKey")
+
+		expectedError := "key: MyKey not found in context"
+
+		assert.Equal(t, "", actualValue)
+		assert.EqualError(t, actualErr, expectedError)
+		ctxLocalerMock.AssertCalled(t, "Locals", "MyKey", mock.Anything)
+	})
+}

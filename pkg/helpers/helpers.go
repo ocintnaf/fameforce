@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 	"strings"
 
@@ -68,4 +69,20 @@ func Validate(data any) ValidationErrors {
 	}
 
 	return res
+}
+
+func GetCtxLocal[TValue interface{}](ctx types.CtxLocaler, key string) (TValue, error) {
+	var casted TValue
+
+	value := ctx.Locals(key)
+	if value == nil {
+		return casted, fmt.Errorf("key: %s not found in context", key)
+	}
+
+	casted, ok := value.(TValue)
+	if !ok {
+		return casted, errors.New("invalid type assertion")
+	}
+
+	return casted, nil
 }
