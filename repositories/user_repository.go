@@ -10,7 +10,7 @@ type userRepository struct {
 }
 
 type UserRepository interface {
-	FindAll() ([]entities.UserEntity, error)
+	FindByID(id string) (*entities.UserEntity, error)
 	Create(e *entities.UserEntity) (*entities.UserEntity, error)
 }
 
@@ -18,12 +18,15 @@ func NewUserRepository(db *gorm.DB) *userRepository {
 	return &userRepository{db: db}
 }
 
-func (ur *userRepository) FindAll() ([]entities.UserEntity, error) {
-	var users []entities.UserEntity
+func (ur *userRepository) FindByID(id string) (*entities.UserEntity, error) {
+	user := &entities.UserEntity{}
 
-	ur.db.Find(&users)
+	err := ur.db.Limit(1).Find(user, "id = ?", id).Error
+	if err != nil {
+		return nil, err
+	}
 
-	return users, nil
+	return user, nil
 }
 
 func (ir *userRepository) Create(e *entities.UserEntity) (*entities.UserEntity, error) {

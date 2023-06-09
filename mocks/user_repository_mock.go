@@ -13,12 +13,13 @@ func NewUserRepositoryMock() *userRepositoryMock {
 	return &userRepositoryMock{}
 }
 
-func (m *userRepositoryMock) FindAll() ([]entities.UserEntity, error) {
-	args := m.Called()
-	return args.Get(0).([]entities.UserEntity), args.Error(1)
+func (m *userRepositoryMock) FindByID(id string) (*entities.UserEntity, error) {
+	args := m.Called(id)
+
+	return args.Get(0).(*entities.UserEntity), args.Error(1)
 }
 
 func (m *userRepositoryMock) Create(e *entities.UserEntity) (*entities.UserEntity, error) {
-	args := m.Called()
+	args := m.Called(e)
 	return args.Get(0).(*entities.UserEntity), args.Error(1)
 }

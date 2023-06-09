@@ -8,6 +8,7 @@ import (
 	"github.com/ocintnaf/fameforce/mocks"
 	"github.com/ocintnaf/fameforce/types"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestNewUserUsecase(t *testing.T) {
@@ -19,47 +20,37 @@ func TestNewUserUsecase(t *testing.T) {
 	})
 }
 
-func TestUserUsecase_GetAll(t *testing.T) {
-	t.Run("should return an error if the userRepository returns an error", func(t *testing.T) {
+func TestUserUsecase_GetByID(t *testing.T) {
+	t.Run("should return an error if the User Repository returns an error", func(t *testing.T) {
 		userRepository := mocks.NewUserRepositoryMock()
-		userRepository.On("FindAll").Return([]entities.UserEntity{}, assert.AnError)
+		userRepository.On("FindByID", mock.Anything).Return(&entities.UserEntity{}, assert.AnError)
 
 		userUsecase := NewUserUsecase(userRepository)
 
-		userDTOs, err := userUsecase.GetAll()
+		userDTO, err := userUsecase.GetByID("unknown-id")
 
 		assert.Error(t, err)
-		assert.Nil(t, userDTOs)
+		assert.Nil(t, userDTO)
+		userRepository.AssertCalled(t, "FindByID", "unknown-id")
 	})
 
-	t.Run("should return a list of userDTOs", func(t *testing.T) {
+	t.Run("should return a User DTO", func(t *testing.T) {
 		now := time.Now()
 
-		userEntityOne := *entities.NewUserEntity("cf", "cf@gmail.com", types.UserTypeInfluencer, now, now)
-		userEntityTwo := *entities.NewUserEntity("cr", "cr@gmail.com", types.UserTypeInfluencer, now, now)
-		userEntityThree := *entities.NewUserEntity("ar", "ag@gmail.com", types.UserTypeInfluencer, now, now)
+		userEntity := entities.NewUserEntity("cf", "cf@gmail.com", types.UserTypeInfluencer, now, now)
 
-		userDTOOne := *userEntityOne.ToDTO()
-		userDTOTwo := *userEntityTwo.ToDTO()
-		userDTOThree := *userEntityThree.ToDTO()
+		expectedUserDTO := userEntity.ToDTO()
 
 		userRepository := mocks.NewUserRepositoryMock()
-		userRepository.On("FindAll").Return([]entities.UserEntity{
-			userEntityOne,
-			userEntityTwo,
-			userEntityThree,
-		}, nil)
+		userRepository.On("FindByID", mock.Anything).Return(userEntity, nil)
 
 		userUsecase := NewUserUsecase(userRepository)
 
-		userDTOs, err := userUsecase.GetAll()
+		actualUserDTO, err := userUsecase.GetByID("cf")
 
 		assert.NoError(t, err)
-		assert.NotNil(t, userDTOs)
-		assert.Len(t, userDTOs, 3)
-		assert.Equal(t, userDTOOne, userDTOs[0])
-		assert.Equal(t, userDTOTwo, userDTOs[1])
-		assert.Equal(t, userDTOThree, userDTOs[2])
-		userRepository.AssertNumberOfCalls(t, "FindAll", 1)
+		assert.NotNil(t, actualUserDTO)
+		assert.Equal(t, expectedUserDTO, actualUserDTO)
+		userRepository.AssertCalled(t, "FindByID", "cf")
 	})
 }

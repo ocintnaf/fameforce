@@ -99,7 +99,7 @@ func (a *app) registerRoutes() {
 	userUsecase := usecases.NewUserUsecase(userRepository)
 	userController := controllers.NewUserController(userUsecase)
 
-	userGroup.Get("/", authMiddleware, userController.GetAll)
+	userGroup.Get("/me", authMiddleware, userController.Me)
 	userGroup.Post("/", authMiddleware, userController.Create)
 }
 
