@@ -6,8 +6,3 @@ import "github.com/gofiber/fiber/v2"
 type BaseController struct {
 	Router fiber.Router
 }
-
-// Controller defines the common methods of all fiber controllers.
-type Controller interface {
-	RegisterRoutes()
-}

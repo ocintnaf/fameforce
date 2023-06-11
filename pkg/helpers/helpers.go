@@ -29,11 +29,11 @@ func GetBearerToken(headerGetter types.HeaderGetter) (string, error) {
 		return "", errors.New("invalid bearer token format")
 	}
 
-	if len(splitToken[1]) == 0 {
+	bearerToken := strings.TrimSpace(splitToken[1])
+
+	if len(bearerToken) == 0 {
 		return "", errors.New("missing bearer token")
 	}
-
-	bearerToken := strings.TrimSpace(splitToken[1])
 
 	return bearerToken, nil
 }
@@ -71,7 +71,7 @@ func Validate(data any) ValidationErrors {
 	return res
 }
 
-func GetCtxLocal[TValue interface{}](ctx types.CtxLocaler, key string) (TValue, error) {
+func GetCtxLocal[TValue interface{}](ctx types.CtxLocalsGetter, key string) (TValue, error) {
 	var casted TValue
 
 	value := ctx.Locals(key)
