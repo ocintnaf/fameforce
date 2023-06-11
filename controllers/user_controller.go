@@ -12,6 +12,7 @@ type userController struct {
 	userUsecase usecases.UserUsecase
 }
 
+// TODO: Split /me and /users in different subdomains
 // UserController is the interface for the user controller.
 type UserController interface {
 	Me(ctx *fiber.Ctx) error
