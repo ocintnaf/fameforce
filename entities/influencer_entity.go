@@ -1,10 +1,15 @@
 package entities
 
-import "time"
+import (
+	"time"
+
+	"github.com/ocintnaf/fameforce/dtos"
+)
 
 type InfluencerEntity struct {
 	BaseEntity[int]
-	User UserEntity
+	UserID string
+	User   UserEntity
 }
 
 func NewInfluencerEntity(
@@ -25,4 +30,19 @@ func NewInfluencerEntity(
 
 func (ie *InfluencerEntity) TableName() string {
 	return "influencers"
+}
+
+func (ie *InfluencerEntity) ToDTO() *dtos.InfluencerDTO {
+	return dtos.NewInfluencerDTO(ie.ID, *ie.User.ToDTO(), ie.CreatedAt, ie.UpdatedAt)
+}
+
+func (ie *InfluencerEntity) FromDTO(dto dtos.InfluencerDTO) {
+	user := &UserEntity{}
+	user.FromDTO(dto.User)
+
+	ie.ID = dto.ID
+	ie.UserID = dto.User.ID
+	ie.User = *user
+	ie.CreatedAt = dto.CreatedAt
+	ie.UpdatedAt = dto.UpdatedAt
 }
