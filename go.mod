@@ -3,7 +3,7 @@ module github.com/ocintnaf/fameforce
 go 1.20
 
 require (
-	firebase.google.com/go/v4 v4.11.0
+	firebase.google.com/go/v4 v4.12.0
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-playground/validator/v10 v10.14.1
